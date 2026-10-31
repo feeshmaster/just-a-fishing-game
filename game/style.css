@@ -1,0 +1,28 @@
+body {
+    background-color: black;
+    margin:0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#menus {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#settings-toggle {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: #ac956c;
+  border-radius: 12px;
+  border-color: #d8bc87;
+  border-width: 5px;
+  border-style: solid;
+}
