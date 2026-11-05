@@ -14,3 +14,12 @@ export type Offset = {
     ox: number;
     oy: number;
 }
+
+export type World = {
+    collisions: Array<number>
+    triggers: Array<number>
+    WORLD_WIDTH: number
+    WORLD_HEIGHT: number
+    map: HTMLImageElement
+    foreground: HTMLImageElement
+} //CHECK: make sure to update this if you add things. yikes

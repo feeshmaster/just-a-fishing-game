@@ -1,4 +1,5 @@
 import './style.css'
+import Game from './classes/game'
 
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -7,3 +8,4 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 </div>
 `
 
+new Game()

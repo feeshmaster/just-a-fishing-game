@@ -58,6 +58,10 @@ body {
     overflow: hidden;
 }
 
+canvas {
+  image-rendering: pixelated;
+}
+
 h1,
 h2 {
   font-family: var(--heading);

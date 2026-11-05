@@ -86,9 +86,15 @@ const triggers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 const WORLD_WIDTH = 70
 const WORLD_HEIGHT = 40
 
+const map = new Image()
+const foreground = new Image()
+map.src = new URL('./MainIsland.png', import.meta.url).href
+foreground.src = new URL('./foreground.png', import.meta.url).href
 export const main = {
     collisions: collisions,
     triggers: triggers,
     WORLD_WIDTH: WORLD_WIDTH,
     WORLD_HEIGHT: WORLD_HEIGHT,
+    map: map,
+    foreground: foreground
 }
