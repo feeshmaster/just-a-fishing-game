@@ -51,34 +51,36 @@ window.addEventListener("keyup", (e) => {
       }
 })*/
 
-type KeyMap<T> = {
+type KeyMap = {
     [identifier: string]: {
-        [key: string]: T
+        [key: string]: {func: Function, ctrl_only: boolean}
     }
 }
 
 type Keys = {
-    [key: string]: {pressed: boolean}
+    [key: string]: {pressed: boolean, ctrl?: boolean}
 }
 
 export default class KeyboardHandler {
     keys: Keys = {}
-    keyMap: KeyMap<() => void> = {}
+    keyMap: KeyMap = {}
     constructor() {
         window.addEventListener("keydown", (e) => {
+            e.preventDefault()
             const key = e.key.toLowerCase()
             if (this.keys[key]) {
                 this.keys[key].pressed = true
             }
         });
         window.addEventListener("keyup", (e) => {
+            e.preventDefault()
             const key = e.key.toLowerCase()
             if (this.keys[key]) {
                 this.keys[key].pressed = false
             }
         })
     }
-    bind(key: string, identifier: string, func: () => void) {
+    bind(key: string, identifier: string, func: () => void, ctrl_only: boolean = false) {
         key = key.toLowerCase()
         if (!this.keys[key]) {
             this.keys[key] = {pressed: false}
@@ -86,7 +88,8 @@ export default class KeyboardHandler {
         if (!this.keyMap[identifier]) {
             this.keyMap[identifier] = {}
         }
-        this.keyMap[identifier][key] = func 
+
+        this.keyMap[identifier][key] = {func: func, ctrl_only: ctrl_only}
     }
     unbind(key: string, identifier: string) {
         delete this.keyMap[identifier]?.[key.toLowerCase()]
@@ -96,7 +99,8 @@ export default class KeyboardHandler {
         for (const identifier in this.keyMap) {
             for (const key in this.keyMap[identifier]) {
                 if (this.keys[key]?.pressed) {
-                    this.keyMap[identifier][key]()
+                    if (this.keys[key]?.ctrl && !this.keyMap[identifier][key].ctrl_only) return
+                    this.keyMap[identifier][key].func()
                 }
             }
         }

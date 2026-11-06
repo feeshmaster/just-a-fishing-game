@@ -33,17 +33,29 @@ export default class Game {
     if (!ctx) {
       throw new Error("Canvas rendering context not found");
     }
-    this.ctx = ctx;
-    this.loadWorld(this.world);
-    this.loadMapObjects();
-    this.viewport.follow(this.player);
-    this.resizeCanvas();
-    window.addEventListener("resize", () => this.resizeCanvas());
-    this.animate();
-      this.keyboard_handler.bind("a", "movement", () => { this.player.pos.x -= 3 })
-      this.keyboard_handler.bind("d", "movement", () => { this.player.pos.x += 3 })
-      this.keyboard_handler.bind("w", "movement", () => { this.player.pos.y -= 3 })
-      this.keyboard_handler.bind("s", "movement", ()=>{this.player.pos.y += 3})
+    this.ctx = ctx
+    this.loadWorld(this.world)
+    this.loadMapObjects()
+    this.viewport.follow(this.player)
+    this.resizeCanvas()
+    window.addEventListener("resize", () => this.resizeCanvas())
+    this.bindListeners()
+    this.animate()
+      
+  }
+  private bindListeners() {
+    this.keyboard_handler.bind("a", "movement", () => { this.player.pos.x -= 3 })
+    this.keyboard_handler.bind("d", "movement", () => { this.player.pos.x += 3 })
+    this.keyboard_handler.bind("w", "movement", () => { this.player.pos.y -= 3 })
+    this.keyboard_handler.bind("s", "movement", ()=>{this.player.pos.y += 3})
+    this.keyboard_handler.bind("ArrowLeft", "movement", () => { this.player.pos.x -= 3 })
+    this.keyboard_handler.bind("ArrowRight", "movement", () => { this.player.pos.x += 3 })
+    this.keyboard_handler.bind("ArrowUp", "movement", () => { this.player.pos.y -= 3 })
+    this.keyboard_handler.bind("ArrowDown", "movement", ()=>{this.player.pos.y += 3})
+
+    this.keyboard_handler.bind("ctrl", "util", ()=>{})
+    this.keyboard_handler.bind("h", "util", ()=>{settings.showHitboxes = !settings.showHitboxes}, true)
+    this.keyboard_handler.bind("g", "util", ()=>{settings.showHitboxes = !settings.showHitboxes}, true)
   }
 
   private loadMapObjects() {
@@ -148,34 +160,18 @@ export default class Game {
     );
     this.ctx.save();
     this.viewport.applyTransform(this.ctx, this.aspect_ratio[0], this.aspect_ratio[1]);
-
-    this.drawSprite(this.background);
+    this.background.render()
+    //this.drawSprite(this.background);
     if (settings.showHitboxes) {
       this.boundaries.forEach((boundary) => boundary.render());
     }
     if (settings.showTriggers) {
       this.triggers.forEach((trigger) => trigger.render());
     }
-    this.drawSprite(this.player);
-    this.drawSprite(this.foreground);
+    this.player.render()
+    this.foreground.render()
+    //this.drawSprite(this.player);
+    //this.drawSprite(this.foreground);
     this.ctx.restore();
-  }
-
-  private drawSprite(sprite: Sprite) {
-    const { image, frames, pos, width, height } = sprite;
-    if (!image.complete || image.naturalWidth === 0) return;
-
-    const frameWidth = image.naturalWidth / frames.max;
-    this.ctx.drawImage(
-      image,
-      frames.currentFrame * frameWidth,
-      0,
-      frameWidth,
-      image.naturalHeight,
-      pos.x,
-      pos.y,
-      width,
-      height,
-    );
   }
 }

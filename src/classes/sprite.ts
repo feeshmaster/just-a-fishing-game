@@ -42,17 +42,21 @@ export default class Sprite {
         }
     }
     render() {
-        this.ctx.drawImage(
-            this.image,
-            this.frames.currentFrame * this.width,
-            0,
-            this.image.width / this.frames.max,
-            this.image.height,
-            this.pos.x,
-            this.pos.y,
-            this.image.width / this.frames.max,
-            this.image.height,
-        )
+    if (!this.image.complete || this.image.naturalWidth === 0) return;
+
+    const frameWidth = this.image.naturalWidth / this.frames.max;
+    this.ctx.drawImage(
+      this.image,
+      this.frames.currentFrame * frameWidth,
+      0,
+      frameWidth,
+      this.image.naturalHeight,
+      this.pos.x,
+      this.pos.y,
+      this.width,
+      this.height,
+    );
+        
         if (this.animating) {
             if (this.frames.max > 1) {
                 this.frames.elapsed++
